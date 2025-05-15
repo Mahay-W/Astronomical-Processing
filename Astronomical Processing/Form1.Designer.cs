@@ -196,6 +196,7 @@
             btnRange.Text = "Range";
             toolTip1.SetToolTip(btnRange, "Calculate and display the range(max-min)");
             btnRange.UseVisualStyleBackColor = true;
+            btnRange.Click += btnRange_Click;
             // 
             // btnSequentialSearch
             // 

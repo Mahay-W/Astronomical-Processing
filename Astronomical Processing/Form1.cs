@@ -298,9 +298,36 @@ namespace Astronomical_Processing
         //Event trigerred when btnAverage is clicked
         private void btnAverage_Click(object sender, EventArgs e)
         {
-            double result= CalculateAverage(neutrinoData);
+            double result = CalculateAverage(neutrinoData);
             txtAverage.Text = result.ToString("F2"); // Display with 2 decimal places
             lblStatusMessage.Text = "Average calculated";
+        }
+
+        //Calculate Range method
+
+        int CalculateRange(int[] data)
+        {
+            int min = data[0];
+            int max = data[0];
+
+            for (int i = 1; i < data.Length; i++)
+            {
+                if (data[i] < min)
+                    min = data[i];
+                if (data[i] > max)
+                    max = data[i];
+            }
+
+            return max - min;
+
+        }
+
+        //Event triggered when btnRange is clicked
+        private void btnRange_Click(object sender, EventArgs e)
+        {
+            int result= CalculateRange(neutrinoData);
+            txtRange.Text = result.ToString();
+            lblStatusMessage.Text = " Range calculated";
         }
     }
 }
