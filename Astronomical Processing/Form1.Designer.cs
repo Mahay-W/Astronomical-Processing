@@ -139,6 +139,7 @@
             btnMidExtreme.Text = "MidExtreme";
             toolTip1.SetToolTip(btnMidExtreme, "Calculate and display MidExtreme");
             btnMidExtreme.UseVisualStyleBackColor = true;
+            btnMidExtreme.Click += btnMidExtreme_Click;
             // 
             // txtMode
             // 

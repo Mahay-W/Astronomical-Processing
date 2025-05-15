@@ -104,7 +104,7 @@ namespace Astronomical_Processing
             }
             else
             {
-                lblStatusMessage.Text = $"Value found.";
+                lblStatusMessage.Text = $"Value found using binary search.";
                 lstNeutrinoData.SelectedIndex = Array.IndexOf(neutrinoData, searchValue);
             }
         }
@@ -196,26 +196,55 @@ namespace Astronomical_Processing
 
             }
 
-            else 
+            else
             {
                 lblStatusMessage.Text = " Value not found using sequential search.";
                 lstNeutrinoData.ClearSelected();
             }
         }
 
-        // Sequential Search function
+        // Sequential Search method
 
         bool SequentialSearch(int[] data, int target)
         {
-            for (int i = 0; i < data.Length; i++) 
+            for (int i = 0; i < data.Length; i++)
             {
-                if (data[i] == target) 
+                if (data[i] == target)
                 {
                     lstNeutrinoData.SelectedIndex = i; // Highlight found item
                     return true;
                 }
             }
             return false; // value not found
+        }
+
+        //Mid-Extreme Method
+
+        double CalculateMidExtreme(int[] data)
+        {
+            int min = data[0];
+            int max = data[0];
+
+            for (int i = 1; i < data.Length; i++)
+            {
+                if (data[i] < min)
+                    min = data[i];
+                if (data[i] > max)
+                    max = data[i];
+
+            }
+
+            double midExtreme = (min + max) / 2.0;
+            return Math.Round(midExtreme, 2); // Round to 2 decimal places
+
+        }
+
+        // Event trigerred when MidExtreme button is clicked
+        private void btnMidExtreme_Click(object sender, EventArgs e)
+        {
+            double result = CalculateMidExtreme(neutrinoData);
+            txtMidExtreme.Text = result.ToString("F2"); // Display in text box with 2 decimal places
+            lblStatusMessage.Text = "Mid-Extreme Calculated.";
         }
     }
 }
