@@ -246,5 +246,39 @@ namespace Astronomical_Processing
             txtMidExtreme.Text = result.ToString("F2"); // Display in text box with 2 decimal places
             lblStatusMessage.Text = "Mid-Extreme Calculated.";
         }
+
+        // Mode method
+
+        int CalculateMode(int[] data)
+        {
+            int mode = data[0];
+            int maxCount = 0;
+            for (int i = 0; i < data.Length; i++)
+            {
+                int count = 0;
+
+                for (int j = 0; j < data.Length; j++)
+                {
+                    if (data[j] == data[i])
+                        count++;
+                }
+
+                if (count > maxCount)
+                {
+                    maxCount = count;
+                    mode = data[i];
+                }
+            }
+
+            return mode;
+        }
+
+        //Event triggered when btnMode is clicked
+        private void btnMode_Click(object sender, EventArgs e)
+        {
+            int result= CalculateMode(neutrinoData);
+            txtMode.Text = result.ToString(); // show result
+            lblStatusMessage.Text = " Mode calculated.";
+        }
     }
 }

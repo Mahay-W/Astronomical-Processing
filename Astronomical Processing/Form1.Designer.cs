@@ -158,6 +158,7 @@
             btnMode.Text = "Mode";
             toolTip1.SetToolTip(btnMode, "Calculate and display the mode (most frequent)");
             btnMode.UseVisualStyleBackColor = true;
+            btnMode.Click += btnMode_Click;
             // 
             // txtAverage
             // 
