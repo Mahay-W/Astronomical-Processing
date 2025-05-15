@@ -115,7 +115,7 @@
             // lblStatusMessage
             // 
             lblStatusMessage.AutoSize = true;
-            lblStatusMessage.Location = new Point(162, 29);
+            lblStatusMessage.Location = new Point(273, 9);
             lblStatusMessage.Margin = new Padding(2, 0, 2, 0);
             lblStatusMessage.Name = "lblStatusMessage";
             lblStatusMessage.Size = new Size(88, 15);
@@ -203,6 +203,7 @@
             btnSequentialSearch.Text = "Seqeuential Search";
             toolTip1.SetToolTip(btnSequentialSearch, "Click to display sequential search");
             btnSequentialSearch.UseVisualStyleBackColor = true;
+            btnSequentialSearch.Click += btnSequentialSearch_Click;
             // 
             // txtSequentialSearch
             // 

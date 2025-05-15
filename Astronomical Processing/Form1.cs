@@ -131,6 +131,9 @@ namespace Astronomical_Processing
 
         }
 
+        // Event triggered when the "Sequential Search " button is clicked
+
+
         // Event triggered when the "Apply Edit" button is clicked
         private void btnApplyEdit_Click_1(object sender, EventArgs e)
         {
@@ -167,6 +170,52 @@ namespace Astronomical_Processing
             {
                 txtEdit.Text = neutrinoData.GetValue(lstNeutrinoData.SelectedIndex)?.ToString();
             }
+        }
+
+        // Event triggered when the "Sequential Search " button is clicked
+
+        private void btnSequentialSearch_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSequentialSearch.Text))
+            {
+                lblStatusMessage.Text = "Search box is empty!";
+                return;
+            }
+
+            int searchValue;
+            if (!int.TryParse(txtSequentialSearch.Text, out searchValue))
+            {
+                lblStatusMessage.Text = "Invalid input!";
+                return;
+            }
+
+            bool found = SequentialSearch(neutrinoData, searchValue);
+            if (found)
+            {
+                lblStatusMessage.Text = " Value found using sequential search.";
+
+            }
+
+            else 
+            {
+                lblStatusMessage.Text = " Value not found using sequential search.";
+                lstNeutrinoData.ClearSelected();
+            }
+        }
+
+        // Sequential Search function
+
+        bool SequentialSearch(int[] data, int target)
+        {
+            for (int i = 0; i < data.Length; i++) 
+            {
+                if (data[i] == target) 
+                {
+                    lstNeutrinoData.SelectedIndex = i; // Highlight found item
+                    return true;
+                }
+            }
+            return false; // value not found
         }
     }
 }
