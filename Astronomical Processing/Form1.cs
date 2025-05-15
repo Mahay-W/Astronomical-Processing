@@ -276,9 +276,31 @@ namespace Astronomical_Processing
         //Event triggered when btnMode is clicked
         private void btnMode_Click(object sender, EventArgs e)
         {
-            int result= CalculateMode(neutrinoData);
+            int result = CalculateMode(neutrinoData);
             txtMode.Text = result.ToString(); // show result
             lblStatusMessage.Text = " Mode calculated.";
+        }
+
+        //Calculate Average Method
+
+        double CalculateAverage(int[] data)
+        {
+            int sum = 0;
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                sum += data[i];
+            }
+            double average = (double)sum / data.Length;
+            return Math.Round(average, 2); // Round to 2 decimal places
+        }
+
+        //Event trigerred when btnAverage is clicked
+        private void btnAverage_Click(object sender, EventArgs e)
+        {
+            double result= CalculateAverage(neutrinoData);
+            txtAverage.Text = result.ToString("F2"); // Display with 2 decimal places
+            lblStatusMessage.Text = "Average calculated";
         }
     }
 }

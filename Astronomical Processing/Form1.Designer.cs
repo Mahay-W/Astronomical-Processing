@@ -177,6 +177,7 @@
             btnAverage.Text = "Average";
             toolTip1.SetToolTip(btnAverage, "Calculate the average value");
             btnAverage.UseVisualStyleBackColor = true;
+            btnAverage.Click += btnAverage_Click;
             // 
             // txtRange
             // 
