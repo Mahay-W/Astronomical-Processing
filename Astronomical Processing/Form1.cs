@@ -96,21 +96,32 @@ namespace Astronomical_Processing
             }
 
             // Perform binary search
-            int foundIndex = BinarySearch(neutrinoData, searchValue);
-            if (foundIndex== -1)
+            List<int> foundIndices= BinarySearch(neutrinoData, searchValue);
+            if (foundIndices.Count==0)
             {
                 lblStatusMessage.Text = "Value not found.";
                 lstNeutrinoData.ClearSelected();
             }
             else
             {
-                lblStatusMessage.Text = $"Value found at index {foundIndex} using binary search.";
-                lstNeutrinoData.SelectedIndex = foundIndex;
+                lstNeutrinoData.ClearSelected();
+
+                // select values (keep 0-based for the list box)
+                foreach (int index in foundIndices)
+                {
+
+                    lstNeutrinoData.SetSelected(index, true);
+                }
+
+                // Display 1-based indices in the status message
+                var oneBasedIndices = foundIndices.Select(i => i + 1);
+
+                lblStatusMessage.Text = $"Value found at indices: {string.Join(", ", oneBasedIndices.OrderBy(i => i) )} using binary search.";
             }
         }
 
         // Binary Search method - works only on sorted arrays
-        int BinarySearch(int[] originalData, int target)
+        List<int> BinarySearch(int[] originalData, int target)
         {
             // Create a copy of the original array with value-index pairs
             var indexedData = originalData
@@ -118,17 +129,36 @@ namespace Astronomical_Processing
                 .OrderBy(item => item.Value)
                 .ToList();
 
+            List<int> resultIndices= new List<int>();
             int low = 0;
             int high = indexedData.Count - 1;
 
             while (low <= high)
             {
                 int mid = (low + high) / 2;
-
+                // check left of mid
                 if (indexedData[mid].Value == target)
                 {
-                    // Return the original index from the unsorted array
-                    return indexedData[mid].OriginalIndex;
+                    int left = mid;
+                    while (left >= 0 && indexedData[left].Value == target)
+                    {
+
+                        resultIndices.Add(indexedData[left].OriginalIndex);
+                        left--;
+                    }
+
+                    // check right of mid
+
+                    int right = mid + 1;
+                    while (right < indexedData.Count && indexedData[right].Value == target)
+                    {
+                        resultIndices.Add(indexedData[right].OriginalIndex);
+                        right++;
+
+                    }
+                    break; // All matching values collected
+
+
                 }
                 else if (indexedData[mid].Value < target)
                 {
@@ -140,7 +170,7 @@ namespace Astronomical_Processing
                 }
             }
 
-            return -1;
+            return resultIndices;
         }
 
         // Event triggered when the "Sequential Search " button is clicked
@@ -201,12 +231,22 @@ namespace Astronomical_Processing
                 return;
             }
 
-            int foundIndex= SequentialSearch(neutrinoData, searchValue);
-            if (foundIndex !=-1)
+            List<int> foundIndices= SequentialSearch(neutrinoData, searchValue);
+            if (foundIndices.Count>0)
            
             {
-                lblStatusMessage.Text = $" Value found at index {foundIndex} using sequential search.";
-                lstNeutrinoData.SelectedIndex = foundIndex;
+                lstNeutrinoData.ClearSelected();
+
+                foreach (int index in foundIndices)
+                {
+                    lstNeutrinoData.SetSelected(index, true); // highlight all found
+                }
+
+                // show 1-based index positions for clarity
+
+                var oneBased = foundIndices.Select(i => i + 1);
+                lblStatusMessage.Text = $"Value found at positions: {string.Join(", ", oneBased)} using sequential search.";
+                
 
             }
 
@@ -219,16 +259,19 @@ namespace Astronomical_Processing
 
         // Sequential Search method
 
-        int SequentialSearch(int[] data, int target)
+        List<int> SequentialSearch(int[] data, int target)
         {
-            for (int i = 0; i < data.Length; i++)
+            List<int> resultIndices = new List<int>();
             {
-                if (data[i] == target)
+                for (int i=0; i< data.Length; i++) 
                 {
-                    return i; // Return the index
+                    if (data[i] == target)
+                    {
+                        resultIndices.Add(i); // Return the index
+                    }
                 }
             }
-            return -1; // Not found
+            return resultIndices; // Not found
         }
 
         //Mid-Extreme Method
