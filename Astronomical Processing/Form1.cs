@@ -1,11 +1,11 @@
-// Mahay Thi Win, Sprint One
+ï»¿// Mahay Thi Win, Sprint Two
 // Date: 30/04/2025
 // Version: 1
-// Astronomical Processing – Neutrino Data Handler
+// Astronomical Processing â€“ Neutrino Data Handler
 // This Windows Forms application processes 24 hourly neutrino readings. 
 // Users can view, sort, search, and edit these values.
 // 
-// Inputs: Randomly generated neutrino readings (10–90), user inputs for search and edit
+// Inputs: Randomly generated neutrino readings (10â€“90), user inputs for search and edit
 // Processes: Populate array, display values in ListBox, sort values using Bubble Sort,
 //            search using Binary Search, allow selection and editing of individual values
 // Outputs: Updated data displayed in ListBox and status messages shown to the user
@@ -96,45 +96,57 @@ namespace Astronomical_Processing
             }
 
             // Perform binary search
-            bool result = BinarySearch(neutrinoData, searchValue);
-            if (!result)
+            int foundIndex = BinarySearch(neutrinoData, searchValue);
+            if (foundIndex== -1)
             {
                 lblStatusMessage.Text = "Value not found.";
                 lstNeutrinoData.ClearSelected();
             }
             else
             {
-                lblStatusMessage.Text = $"Value found using binary search.";
-                lstNeutrinoData.SelectedIndex = Array.IndexOf(neutrinoData, searchValue);
+                lblStatusMessage.Text = $"Value found at index {foundIndex} using binary search.";
+                lstNeutrinoData.SelectedIndex = foundIndex;
             }
         }
 
         // Binary Search method - works only on sorted arrays
-        bool BinarySearch(int[] data, int target)
+        int BinarySearch(int[] originalData, int target)
         {
-            var sortedData = data.OrderBy(x => x).ToList();
+            // Create a copy of the original array with value-index pairs
+            var indexedData = originalData
+                .Select((value, index) => new { Value = value, OriginalIndex = index })
+                .OrderBy(item => item.Value)
+                .ToList();
+
             int low = 0;
-            int high = sortedData.Count - 1;
+            int high = indexedData.Count - 1;
 
             while (low <= high)
             {
                 int mid = (low + high) / 2;
-                if (sortedData[mid] == target)
-                    return true; // Found it
-                else if (sortedData[mid] < target)
-                    low = mid + 1; // Search right half
+
+                if (indexedData[mid].Value == target)
+                {
+                    // Return the original index from the unsorted array
+                    return indexedData[mid].OriginalIndex;
+                }
+                else if (indexedData[mid].Value < target)
+                {
+                    low = mid + 1;
+                }
                 else
-                    high = mid - 1;// Search left half
+                {
+                    high = mid - 1;
+                }
             }
 
-            return false; // Not found
-
+            return -1;
         }
 
         // Event triggered when the "Sequential Search " button is clicked
 
 
-        // Event triggered when the "Apply Edit" button is clicked
+            // Event triggered when the "Apply Edit" button is clicked
         private void btnApplyEdit_Click_1(object sender, EventArgs e)
         {
             // Check if user selected an item from the ListBox
@@ -189,10 +201,12 @@ namespace Astronomical_Processing
                 return;
             }
 
-            bool found = SequentialSearch(neutrinoData, searchValue);
-            if (found)
+            int foundIndex= SequentialSearch(neutrinoData, searchValue);
+            if (foundIndex !=-1)
+           
             {
-                lblStatusMessage.Text = " Value found using sequential search.";
+                lblStatusMessage.Text = $" Value found at index {foundIndex} using sequential search.";
+                lstNeutrinoData.SelectedIndex = foundIndex;
 
             }
 
@@ -205,17 +219,16 @@ namespace Astronomical_Processing
 
         // Sequential Search method
 
-        bool SequentialSearch(int[] data, int target)
+        int SequentialSearch(int[] data, int target)
         {
             for (int i = 0; i < data.Length; i++)
             {
                 if (data[i] == target)
                 {
-                    lstNeutrinoData.SelectedIndex = i; // Highlight found item
-                    return true;
+                    return i; // Return the index
                 }
             }
-            return false; // value not found
+            return -1; // Not found
         }
 
         //Mid-Extreme Method
